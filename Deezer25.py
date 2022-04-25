@@ -44,7 +44,7 @@ def top_25_songs_search(country):
     elif country == 'UK':
         id = '7241549564'
 
-    token = 'frswWGDHWvMneQqtZ2vRzn3fuVW2slrubjY5iFEaHV6J6YJ38im'
+    token = 'frvoR0UBSS6UhHJYHZfLGrQ6zHGbmizKks85J3YumqG1KsStX7X'
     baseurl = 'https://api.deezer.com/playlist/' + id
     param = {'limit': 25, 'access_token': token}
     response = requests.get(baseurl, params = param)
@@ -54,8 +54,7 @@ def top_25_songs_search(country):
     songs = []
     i = 0
     for i in range(0,25):
-        songs.append({'ranking' : i + 1,'title' : all_results['tracks']['data'][i]['title'],'artists' : all_results['tracks']['data'][i]['artist']['name'], 'country': country})
-    print(songs)    
+        songs.append({'ranking' : i + 1,'title' : all_results['tracks']['data'][i]['title'],'artists' : all_results['tracks']['data'][i]['artist']['name'], 'country': country})   
     return songs
     '''print(all_results)'''
 
@@ -65,8 +64,8 @@ def setUpDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
-def set_up_discogs_table(data, start, cur, conn):
-    cur.execute("CREATE TABLE IF NOT EXISTS Discogs (song_id INTEGER PRIMARY KEY, ranking INTEGER, country TEXT, title TEXT, artist TEXT)")
+def set_up_deezer_table(data, start, cur, conn):
+    cur.execute("CREATE TABLE IF NOT EXISTS Deezer (song_id INTEGER PRIMARY KEY, ranking INTEGER, country TEXT, title TEXT, artist TEXT)")
     song_id = start
 
     for song in data:
@@ -77,24 +76,24 @@ def set_up_discogs_table(data, start, cur, conn):
         title = song['title']
         artist = song['artists']
         
-        cur.execute("INSERT OR IGNORE INTO Discogs (song_id, ranking, country, title, artist) VALUES (?, ?, ?, ?, ?)", (song_id, ranking, country, title, artist))
+        cur.execute("INSERT OR IGNORE INTO Deezer (song_id, ranking, country, title, artist) VALUES (?, ?, ?, ?, ?)", (song_id, ranking, country, title, artist))
 
     conn.commit()
 
 
 def main():
     
-    cur, conn = setUpDatabase('music1.db')
+    cur, conn = setUpDatabase('music.db')
 
     top25_US = top_25_songs_search('US')
     top25_FR = top_25_songs_search('France')
     top25_CA = top_25_songs_search('Canada')
     top25_UK = top_25_songs_search('UK')
 
-    set_up_discogs_table(top25_US, 0, cur, conn)
-    set_up_discogs_table(top25_FR, 25, cur, conn)
-    set_up_discogs_table(top25_UK, 50, cur, conn)
-    set_up_discogs_table(top25_CA, 75, cur, conn)
+    set_up_deezer_table(top25_US, 0, cur, conn)
+    set_up_deezer_table(top25_FR, 25, cur, conn)
+    set_up_deezer_table(top25_UK, 50, cur, conn)
+    set_up_deezer_table(top25_CA, 75, cur, conn)
 
 if __name__ == '__main__':
     main()
