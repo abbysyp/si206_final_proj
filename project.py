@@ -43,7 +43,7 @@ def getTrackFeatures(id_sp):
     track_info = sp.track(id_sp)
     features = sp.audio_features(id_sp)
 
-    #name
+    #track info
     name = track_info['name']
     artist = track_info['album']['artists'][0]['name']
     #features
