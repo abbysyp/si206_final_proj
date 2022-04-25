@@ -44,7 +44,7 @@ def top_25_songs_search(country):
     elif country == 'UK':
         id = '7241549564'
 
-    token = 'frvoR0UBSS6UhHJYHZfLGrQ6zHGbmizKks85J3YumqG1KsStX7X'
+    token = 'frdyDKjLNK64GahOsa0VAy5WN7rnJzvXgisjccFhqskm7ga91zx'
     baseurl = 'https://api.deezer.com/playlist/' + id
     param = {'limit': 25, 'access_token': token}
     response = requests.get(baseurl, params = param)
@@ -84,16 +84,17 @@ def set_up_deezer_table(data, start, cur, conn):
 def main():
     
     cur, conn = setUpDatabase('music.db')
+    cur.execute("DROP TABLE Deezer")
 
     top25_US = top_25_songs_search('US')
     top25_FR = top_25_songs_search('France')
     top25_CA = top_25_songs_search('Canada')
     top25_UK = top_25_songs_search('UK')
 
-    set_up_deezer_table(top25_US, 0, cur, conn)
-    set_up_deezer_table(top25_FR, 25, cur, conn)
-    set_up_deezer_table(top25_UK, 50, cur, conn)
-    set_up_deezer_table(top25_CA, 75, cur, conn)
+    set_up_deezer_table(top25_US, 100, cur, conn)
+    set_up_deezer_table(top25_FR, 125, cur, conn)
+    set_up_deezer_table(top25_UK, 150, cur, conn)
+    set_up_deezer_table(top25_CA, 175, cur, conn)
 
 if __name__ == '__main__':
     main()

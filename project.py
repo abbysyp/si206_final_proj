@@ -79,6 +79,39 @@ def set_up_table(ids,start, cur, conn):
          cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness) VALUES (?, ?, ?, ?, ?, ?, ?)", (song_id, title, artist, tempo, danceability, speechiness, liveness))
     conn.commit()
 
+def join_3_databases(ranking, cur, conn):
+    cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER)")
+
+    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
+
+    avg_tempo = 0
+    avg_danceability = 0
+    avg_speechiness = 0
+    avg_liveness = 0
+
+    for row in cur:
+        print("discogs:", row)
+        avg_tempo += row[0]
+        avg_danceability += row[1]
+        avg_speechiness += row[2]
+        avg_liveness += row[3]
+
+    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Deezer JOIN Spotify ON Deezer.song_id == Spotify.song_id WHERE Deezer.ranking == ?", (ranking, ))
+
+    for row in cur:
+        print("deezer:", row)
+        avg_tempo += row[0]
+        avg_danceability += row[1]
+        avg_speechiness += row[2]
+        avg_liveness += row[3]
+
+    avg_tempo = avg_tempo / 8
+    avg_danceability = avg_danceability / 8
+    avg_speechiness = avg_speechiness / 8
+    avg_liveness = avg_liveness / 8
+
+    cur.execute("INSERT OR IGNORE INTO Averages (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness) VALUES (?, ?, ?, ?, ?)", (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness))
+    conn.commit()
 
 def main():
     cur, conn = setUpDatabase('music.db')
@@ -103,6 +136,8 @@ def main():
     set_up_table(Deezer_top25_CA, 150, cur, conn)
     set_up_table(Deezer_top25_UK, 175, cur, conn)
 
+    for i in range(1, 26):
+        join_3_databases(i, cur, conn)
 
 
 if __name__ == '__main__':
