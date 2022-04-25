@@ -81,7 +81,7 @@ def set_up_table(ids,start, cur, conn):
 
 
 def main():
-    cur, conn = setUpDatabase('features.db')
+    cur, conn = setUpDatabase('music.db')
 
     Discogs_top25_US = getTrackIDs('yuriii','2OSzXp9nSHyUgC9WviQEHo')
     Discogs_top25_FR = getTrackIDs('yuriii','3WJ0FDVrJxG3gpE3G7Y34c')
