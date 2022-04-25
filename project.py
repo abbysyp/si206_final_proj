@@ -40,12 +40,12 @@ def getTrackIDs(user,playlist_id):
 # print(ids)
 
 def getTrackFeatures(id_sp):
-    meta = sp.track(id_sp)
+    track_info = sp.track(id_sp)
     features = sp.audio_features(id_sp)
 
     #name
-    name = meta['name']
-    artist = meta['album']['artists'][0]['name']
+    name = track_info['name']
+    artist = track_info['album']['artists'][0]['name']
     #features
     tempo = features[0]['tempo']
     danceability = features[0]['danceability']
