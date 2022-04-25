@@ -98,10 +98,10 @@ def main():
     set_up_table(Discogs_top25_CA, 50, cur, conn)
     set_up_table(Discogs_top25_UK, 75, cur, conn)
 
-    set_up_table(Deezer_top25_US, 0, cur, conn)
-    set_up_table(Deezer_top25_FR, 25, cur, conn)
-    set_up_table(Deezer_top25_CA, 50, cur, conn)
-    set_up_table(Deezer_top25_UK, 75, cur, conn)
+    set_up_table(Deezer_top25_US, 100, cur, conn)
+    set_up_table(Deezer_top25_FR, 125, cur, conn)
+    set_up_table(Deezer_top25_CA, 150, cur, conn)
+    set_up_table(Deezer_top25_UK, 175, cur, conn)
 
 
 
