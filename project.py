@@ -88,10 +88,21 @@ def main():
     Discogs_top25_CA = getTrackIDs('yuriii','1qrRuRY6juGQrItbR7Y3Yt')
     Discogs_top25_UK = getTrackIDs('yuriii','1wEqjX4fSRpssepF7RC2a5')
 
+    Deezer_top25_US = getTrackIDs('yuriii','5ZC9rbYk5S0jpkxqOxr1YO')
+    Deezer_top25_FR = getTrackIDs('yuriii','1HYZlXddhKQn1qXGpSM2IP')
+    Deezer_top25_CA = getTrackIDs('yuriii','51kb6iDc0hdaj8mJyVvMaI')
+    Deezer_top25_UK = getTrackIDs('yuriii','07B2KrdbdsuVAPrXTx6MU5')
+
     set_up_table(Discogs_top25_US, 0, cur, conn)
     set_up_table(Discogs_top25_FR, 25, cur, conn)
     set_up_table(Discogs_top25_CA, 50, cur, conn)
     set_up_table(Discogs_top25_UK, 75, cur, conn)
+
+    set_up_table(Deezer_top25_US, 0, cur, conn)
+    set_up_table(Deezer_top25_FR, 25, cur, conn)
+    set_up_table(Deezer_top25_CA, 50, cur, conn)
+    set_up_table(Deezer_top25_UK, 75, cur, conn)
+
 
 
 if __name__ == '__main__':
