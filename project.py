@@ -81,7 +81,7 @@ def set_up_table(ids,start, cur, conn):
          cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness) VALUES (?, ?, ?, ?, ?, ?, ?)", (song_id, title, artist, tempo, danceability, speechiness, liveness))
     conn.commit()
 
-def join_3_databases(ranking, cur, conn):
+def join_3_databases(info_dict, ranking, cur, conn):
     cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER)")
 
     cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
@@ -113,6 +113,22 @@ def join_3_databases(ranking, cur, conn):
     cur.execute("INSERT OR IGNORE INTO Averages (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness) VALUES (?, ?, ?, ?, ?)", (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness))
     conn.commit()
 
+    info_dict[ranking] = [avg_tempo, avg_danceability, avg_speechiness, avg_liveness]
+
+def printAverages(info_dict, file):
+    source_dir = os.path.dirname(__file__)
+    full_path = os.path.join(source_dir, file)
+    out_file = open(full_path, "w")
+    with open(file) as f:
+        csv_writer = csv.writer(out_file, delimiter=",", quotechar='"')
+        out_file.write('Average Spotify statistics for the top 25 songs in US, France, Canada, and UK on Deezer and Discogs\n')
+        for key, item in info_dict.items():
+            out_file.write('#' + str(key) + ": ")
+            out_file.write('Tempo - ' + str(item[0]) + ', ')
+            out_file.write('Danceability - ' + str(item[1]) + ', ')
+            out_file.write('Speechiness - ' + str(item[2]) + ', ')
+            out_file.write('Liveness - ' + str(item[3]) + '\n')
+
 def main():
     cur, conn = setUpDatabase('music.db')
 
@@ -136,8 +152,12 @@ def main():
     set_up_table(Deezer_top25_CA, 150, cur, conn)
     set_up_table(Deezer_top25_UK, 175, cur, conn)
 
+    all_info = {}
+
     for i in range(1, 26):
-        join_3_databases(i, cur, conn)
+        join_3_databases(all_info, i, cur, conn)
+
+    printAverages(all_info, 'results.txt')
 
 
 if __name__ == '__main__':
