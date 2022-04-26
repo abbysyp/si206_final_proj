@@ -51,7 +51,7 @@ Takes a country (US, UK, Canada, or France), assign the corresponding id. It the
 
 def setUpDatabase(db_name):
 '''
-Takes the database 'music1.db' as a [ara,eter. sets up the database, and returns cur and conn
+Takes the database 'music.db' as a [ara,eter. sets up the database, and returns cur and conn
 '''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
