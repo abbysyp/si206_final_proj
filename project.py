@@ -40,12 +40,12 @@ def getTrackIDs(user,playlist_id):
 # print(ids)
 
 def getTrackFeatures(id_sp):
-    track_info = sp.track(id_sp)
+    meta = sp.track(id_sp)
     features = sp.audio_features(id_sp)
 
-    #track info
-    name = track_info['name']
-    artist = track_info['album']['artists'][0]['name']
+    #name
+    name = meta['name']
+    artist = meta['album']['artists'][0]['name']
     #features
     tempo = features[0]['tempo']
     danceability = features[0]['danceability']
@@ -90,7 +90,6 @@ def join_3_databases(ranking, cur, conn):
     avg_liveness = 0
 
     for row in cur:
-        print("discogs:", row)
         avg_tempo += row[0]
         avg_danceability += row[1]
         avg_speechiness += row[2]
@@ -99,7 +98,6 @@ def join_3_databases(ranking, cur, conn):
     cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Deezer JOIN Spotify ON Deezer.song_id == Spotify.song_id WHERE Deezer.ranking == ?", (ranking, ))
 
     for row in cur:
-        print("deezer:", row)
         avg_tempo += row[0]
         avg_danceability += row[1]
         avg_speechiness += row[2]
