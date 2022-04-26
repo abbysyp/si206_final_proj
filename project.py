@@ -92,10 +92,12 @@ def drop_table(cur, conn):
     conn.commit()
 
 def join_3_databases(info_dict, ranking, cur, conn):
-    '''This function joins the 3 database together: rankings from Discogs and Deezer database 
-    and song features from Spotify. The function also calculates the average numbers from each
-    of the features among the 8 songs of the same ranking in different countries and store it
-    in a new table 'Averages' in 'music.db' database.'''
+    '''This function takes in an empty dictionary, a specific ranking, cur, and conn and creates the Averages table in the database 'music.db'.
+    It then uses JOIN to select Spotify statistics for songs that are of that ranking (e.g. all of the #1 songs) from Discogs and Deezer tables.
+    After each JOIN, the function loops through the selected songs to find the accumulated tempo, danceability, speechiness, liveness, and loudness scores.
+    Then, these values are divided by 8 (e.g. 4 #1 songs from Discogs + 4 #1 songs from Deezer) to find the averages for each ranking and stores
+    this information into the Averages table as well as into the passed in dictionary.'''
+    
     cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER, avg_loudness INTEGER)")
 
     cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness, Spotify.loudness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
@@ -135,8 +137,8 @@ def join_3_databases(info_dict, ranking, cur, conn):
     info_dict[ranking] = [avg_tempo, avg_danceability, avg_speechiness, avg_liveness, avg_loudness]
 
 def printAverages(info_dict, file):
-    '''This function takes in the information on the average numbers 
-    and writes it in a text file.''' 
+    '''This function takes in the dictionary now filled with information gathered from join_3_databases and writes it to the file 'results.text'
+    in the format #X: Tempo - X, Danceability - X, Speechiness - X, Liveness - X, Loudness - X.''' 
     source_dir = os.path.dirname(__file__)
     full_path = os.path.join(source_dir, file)
     out_file = open(full_path, "w")
