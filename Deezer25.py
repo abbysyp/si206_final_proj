@@ -9,16 +9,6 @@ import csv
 import datetime
 import jwt
 
-'''def read_cache(CACHE_FNAME):
-    try:
-        cache_file = open(CACHE_FNAME, 'r', encoding="utf-8") 
-        cache_contents = cache_file.read()  
-        CACHE_DICTION = json.loads(cache_contents) 
-        cache_file.close() 
-        return CACHE_DICTION
-    except:
-        CACHE_DICTION = {}
-        return CACHE_DICTION'''
 '''
 1. Go to https://connect.deezer.com/oauth/auth.php?app_id=YOUR_APP_ID&redirect_uri=YOUR_REDIRECT_URI&perms=basic_access,email
 (Yuna's appId:537442, redirectURL: https://theappreciationengine.com/DeezerAuthenticator_Controller )
@@ -31,10 +21,11 @@ https://connect.deezer.com/oauth/access_token.php?app_id=537442&secret=4d5f70ae8
 For the ***, enter the auth code from 2
 --> You will get the access_token. This is valid for 3600 seconds. 
 '''
-def aah():
-    print('aa')
 
 def top_25_songs_search(country):
+'''
+Takes a country (US, UK, Canada, or France), assign the corresponding id. It then uses the Deezer API to obtain song information for the top 25 songs of the country. It then finds the ranking, title, artist, and country of each song obtained and returns a list of dictionaries. ex. [{ranking: 1, title: ___, artists: ____, country: ___}, {...}]
+'''
     if country == 'US':
         id = '1313621735'
     elif country == 'Canada':
@@ -59,12 +50,18 @@ def top_25_songs_search(country):
     '''print(all_results)'''
 
 def setUpDatabase(db_name):
+'''
+Takes the database 'music1.db' as a [ara,eter. sets up the database, and returns cur and conn
+'''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
     cur = conn.cursor()
     return cur, conn
 
 def set_up_deezer_table(data, start, cur, conn):
+'''
+Sets up the Deezer table that will go into the 'music1.db' database. It takes the list of tuples returned by top_25_songs_search and put them in a table (1 country, 25 songs at a time) that has the following values: song_id (shared key), ranking, country, title, artist.
+'''
     cur.execute("CREATE TABLE IF NOT EXISTS Deezer (song_id INTEGER PRIMARY KEY, ranking INTEGER, country TEXT, title TEXT, artist TEXT)")
     song_id = start
 
@@ -82,6 +79,9 @@ def set_up_deezer_table(data, start, cur, conn):
 
 
 def main():
+'''
+calls the above functions.
+'''
     
     cur, conn = setUpDatabase('music.db')
     cur.execute("DROP TABLE Deezer")
