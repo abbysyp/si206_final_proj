@@ -19,6 +19,8 @@ client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secr
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 
 def getTrackIDs():
+    '''This function looks through each playlists gathered by top 25 songs in the Discogs and Deezer Databse
+    and find all the song IDs in these database'''
     user = 'yuriii'
     playlists = ['2OSzXp9nSHyUgC9WviQEHo','3WJ0FDVrJxG3gpE3G7Y34c', '1qrRuRY6juGQrItbR7Y3Yt', '1wEqjX4fSRpssepF7RC2a5', '07B2KrdbdsuVAPrXTx6MU5', '1HYZlXddhKQn1qXGpSM2IP', '51kb6iDc0hdaj8mJyVvMaI', '5ZC9rbYk5S0jpkxqOxr1YO']
     ids= []
@@ -32,6 +34,8 @@ def getTrackIDs():
     return ids
 
 def getTrackFeatures(id_sp):
+    '''This function collects all the song features including 
+    song name, artist, tempo, danceability, speechiness, liveliness, and loudness using the song IDs'''
     track_info = sp.track(id_sp)
     features = sp.audio_features(id_sp)
     #name
@@ -42,18 +46,23 @@ def getTrackFeatures(id_sp):
     danceability = features[0]['danceability']
     speechiness = features[0]['speechiness']
     liveness = features[0]['liveness']
+    loudness = features[0]['loudness']
 
-    track = [name, artist, tempo, danceability, speechiness,liveness]
+    track = [name, artist, tempo, danceability, speechiness,liveness,loudness]
     return track
 
 def setUpDatabase(db_name):
+    '''This function takes the database 'music.db' as a parameter, sets up the database, 
+    and returns cur and conn'''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
     cur = conn.cursor()
     return cur, conn
 
 def set_up_table(ids, cur, conn):
-    cur.execute("CREATE TABLE IF NOT EXISTS Spotify (song_id INTEGER PRIMARY KEY, title TEXT, artist TEXT, tempo INTEGER, danceability INTEGER, speechiness INTEGER, liveness INTEGER)")
+    '''This function sets up the Spotify table under 'music.db' and takes in all the song features information 
+    and stores it in the table 25 songs at a time. This code needs to be run 8 times'''
+    cur.execute("CREATE TABLE IF NOT EXISTS Spotify (song_id INTEGER PRIMARY KEY, title TEXT, artist TEXT, tempo INTEGER, danceability INTEGER, speechiness INTEGER, liveness INTEGER, loudness INTEGER)")
     cur.execute('SELECT song_id FROM Spotify WHERE song_id = (SELECT MAX(song_id) FROM Spotify)')
     start = cur.fetchone()
 
@@ -72,49 +81,62 @@ def set_up_table(ids, cur, conn):
          danceability = features[3]
          speechiness = features[4]
          liveness = features[5]
+         loudness = features[6]
 
-         cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness) VALUES (?, ?, ?, ?, ?, ?, ?)", (song_id, title, artist, tempo, danceability, speechiness, liveness))
+         cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness) VALUES (?, ?, ?, ?, ?, ?, ?,?)", (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness))
     conn.commit()
 
 def drop_table(cur, conn):
-    cur.execute('DROP TABLE Spotify')
+    '''This additional function is used to drop selected table if the database is not loading properly'''
+    cur.execute('DROP TABLE Averages')
     conn.commit()
 
 def join_3_databases(info_dict, ranking, cur, conn):
-    cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER)")
+    '''This function joins the 3 database together: rankings from Discogs and Deezer database 
+    and song features from Spotify. The function also calculates the average numbers from each
+    of the features among the 8 songs of the same ranking in different countries and store it
+    in a new table 'Averages' in 'music.db' database.'''
+    cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER, avg_loudness INTEGER)")
 
-    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
+    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness, Spotify.loudness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
 
     avg_tempo = 0
     avg_danceability = 0
     avg_speechiness = 0
     avg_liveness = 0
+    avg_loudness = 0
 
     for row in cur:
         avg_tempo += row[0]
         avg_danceability += row[1]
         avg_speechiness += row[2]
         avg_liveness += row[3]
+        avg_loudness += row[4]
 
-    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness FROM Deezer JOIN Spotify ON Deezer.song_id == Spotify.song_id WHERE Deezer.ranking == ?", (ranking, ))
+
+    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness, Spotify.loudness FROM Deezer JOIN Spotify ON Deezer.song_id == Spotify.song_id WHERE Deezer.ranking == ?", (ranking, ))
 
     for row in cur:
         avg_tempo += row[0]
         avg_danceability += row[1]
         avg_speechiness += row[2]
         avg_liveness += row[3]
+        avg_loudness += row[4]
 
     avg_tempo = avg_tempo / 8
     avg_danceability = avg_danceability / 8
     avg_speechiness = avg_speechiness / 8
     avg_liveness = avg_liveness / 8
+    avg_loudness = avg_loudness / 8
 
-    cur.execute("INSERT OR IGNORE INTO Averages (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness) VALUES (?, ?, ?, ?, ?)", (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness))
+    cur.execute("INSERT OR IGNORE INTO Averages (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness, avg_loudness) VALUES (?, ?, ?, ?, ?,?)", (ranking, avg_tempo, avg_danceability, avg_speechiness, avg_liveness, avg_loudness))
     conn.commit()
 
-    info_dict[ranking] = [avg_tempo, avg_danceability, avg_speechiness, avg_liveness]
+    info_dict[ranking] = [avg_tempo, avg_danceability, avg_speechiness, avg_liveness, avg_loudness]
 
 def printAverages(info_dict, file):
+    '''This function takes in the information on the average numbers 
+    and writes it in a text file.''' 
     source_dir = os.path.dirname(__file__)
     full_path = os.path.join(source_dir, file)
     out_file = open(full_path, "w")
@@ -127,11 +149,14 @@ def printAverages(info_dict, file):
             out_file.write('Danceability - ' + str(item[1]) + ', ')
             out_file.write('Speechiness - ' + str(item[2]) + ', ')
             out_file.write('Liveness - ' + str(item[3]) + '\n')
+            out_file.write('Loudness - ' + str(item[4]) + '\n')
 
 def main():
+    '''calls the above functions.'''
     cur, conn = setUpDatabase('music.db')
     track_ids = getTrackIDs()
     set_up_table(track_ids, cur,conn)
+    # drop_table(cur,conn)
 
     all_info = {}
     for i in range(1, 26):
