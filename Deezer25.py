@@ -9,6 +9,7 @@ import csv
 import datetime
 import jwt
 
+
 '''def read_cache(CACHE_FNAME):
     try:
         cache_file = open(CACHE_FNAME, 'r', encoding="utf-8") 
@@ -25,7 +26,7 @@ import jwt
 (https://connect.deezer.com/oauth/auth.php?app_id=537442&redirect_uri=https://theappreciationengine.com/DeezerAuthenticator_Controller&perms=basic_access,email)
 2. Click "continue" if prompted yunat account
 --> on the url bar, find the code="**"
-frdd994eb6ef72424f2f5eb3434fdf11
+fr3d68969fde9d5427807046d156d4b8
 ** is the auth code
 3. On the url bar, type
 https://connect.deezer.com/oauth/access_token.php?app_id=537442&secret=4d5f70ae842906d48ae6521d946d5654&code=***
@@ -34,22 +35,17 @@ For the ***, enter the auth code from 2
 '''
 
 def get_deezer_songs():
+    '''
+    Loops through ids_for_each_country list for each id corresponding with 4 countries. 
+    It then uses the Deezer API to obtain song information for the top 25 songs of the country. It then finds the ranking, 
+    title, artist, and country of each song obtained and returns a list of dictionaries. 
+    ex. [{ranking: 1, title: ___, artists: ____, country: ___}, {...}]'''
+
     ids_for_each_country = ['1313621735', '1652248171', '1109890291', '7241549564']
     songs = []
-    '''
-    these are the assigned ids for each country
-    country == 'US':
-        id = '1313621735'
-    country == 'Canada':
-        id = '1652248171'
-    country == 'France':
-        id = '1109890291'
-    country == 'UK':
-        id = '7241549564'
-    '''
 
     for id in ids_for_each_country:
-        token = 'fr5MK6d4xZw1GWGwQY9edl8VYj7zBXmQlkIiyfwNBgahxKWzjRw'
+        token = 'frBeZFVkgg9rDnWEXnCbV3w0Twd75Dzzfi87ctgoLpAfJCaddNz'
         baseurl = 'https://api.deezer.com/playlist/' + id
         param = {'limit': 25, 'access_token': token}
         response = requests.get(baseurl, params = param)
@@ -74,12 +70,22 @@ def get_deezer_songs():
     
 
 def setUpDatabase(db_name):
+    '''
+    Takes the database 'music1.db' as a [ara,eter. sets up the database, and returns cur and conn
+    '''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
     cur = conn.cursor()
     return cur, conn
 
 def set_up_deezer_table(data, cur, conn):
+    '''
+    Sets up the Deezer table that will go into the 'music.db' database. 
+    It takes the list of tuples returned by get_deezer_songs and put them in a table 
+    (25 songs at a time/per run) that has the following values: 
+    song_id (shared key), ranking, country, title, artist.
+    Obtain the last song_id in the database to identify where in data(dictionary) to start from. 
+    '''
 
     cur.execute("CREATE TABLE IF NOT EXISTS Deezer (song_id INTEGER PRIMARY KEY, ranking INTEGER, country TEXT, title TEXT, artist TEXT)")
 
@@ -106,8 +112,11 @@ def set_up_deezer_table(data, cur, conn):
 
 
 def main():
+    '''
+    calls the above functions.
+    '''
     
-    cur, conn = setUpDatabase('music2.db')
+    cur, conn = setUpDatabase('music.db')
 
     top_deezer = get_deezer_songs()
 
