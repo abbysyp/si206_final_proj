@@ -33,6 +33,8 @@ def getTrackIDs(user,playlist_id):
     for item in playlist['tracks']['items']:
         track = item['track']
         ids.append(track['id'])
+        if len(ids)==25:
+            break
     return ids
 
 # ids = getTrackIDs('yuriii','3H5OVme5Omrwrzc8zBDpKp')
