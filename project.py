@@ -87,9 +87,9 @@ def set_up_table(ids, cur, conn):
          cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness) VALUES (?, ?, ?, ?, ?, ?, ?,?)", (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness))
     conn.commit()
 
-def drop_table(cur, conn):
+def drop_table(name, cur, conn):
     '''This additional function is used to drop selected table if the database is not loading properly'''
-    cur.execute('DROP TABLE Averages')
+    cur.execute(f"DROP TABLE {name}")
     conn.commit()
 
 def join_3_databases(info_dict, ranking, cur, conn):
@@ -160,13 +160,16 @@ def main():
     cur, conn = setUpDatabase('music.db')
     track_ids = getTrackIDs()
     set_up_table(track_ids, cur,conn)
-    # drop_table(cur,conn)
 
     #Section 2- Calculate data & write text file
     all_info = {}
     for i in range(1, 26):
         join_3_databases(all_info, i, cur, conn)
     printAverages(all_info, 'results.txt')
+
+    #Additional- drop necessary table to restart
+    #drop_table('Spotify', cur,conn)
+    #drop_table('Averages', cur,conn)
 
 if __name__ == '__main__':
     main()
