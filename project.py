@@ -156,11 +156,13 @@ def printAverages(info_dict, file):
 
 def main():
     '''calls the above functions.'''
+    #Section 1- get Spotify features to database
     cur, conn = setUpDatabase('music.db')
     track_ids = getTrackIDs()
     set_up_table(track_ids, cur,conn)
     # drop_table(cur,conn)
 
+    #Section 2- Calculate data & write text file
     all_info = {}
     for i in range(1, 26):
         join_3_databases(all_info, i, cur, conn)
