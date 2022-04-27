@@ -60,9 +60,30 @@ def create_danceability_graph(lst):
         rankings.append(item['ranking'])
         danceability_vals.append(item['avg_danceability'])
 
-    ax.plot(rankings, danceability_vals, 'm-')
+    ax.plot(rankings, danceability_vals, 'm-', marker='o')
 
     ax.set(xlabel='rankings', ylabel='average danceability rating', title='average danceability for top 25 songs across Discogs and Deezer')
+    
+    ax.grid()
+
+    plt.show()
+
+def create_speechiness_graph(lst):
+    '''creating graph 3'''
+    fig = plt.figure()
+
+    rankings = []
+    speechiness_vals = []
+
+    for item in lst:
+        rankings.append(item['ranking'])
+        speechiness_vals.append(item['avg_speechiness'])
+
+    ax = fig.add_subplot(111)
+
+    ax.bar(rankings, speechiness_vals, color='black')
+
+    ax.set(xlabel='rankings', ylabel='average speechiness rating', title='average speechiness for top 25 songs across Discogs and Deezer')
     
     ax.grid()
 
@@ -72,8 +93,12 @@ def create_danceability_graph(lst):
     
 def main():
     data_lst = create_vis('music.db')
+
     create_tempo_graph(data_lst)
+
     create_danceability_graph(data_lst)
+    
+    create_speechiness_graph(data_lst)
 
 if __name__ == '__main__':
     main()
