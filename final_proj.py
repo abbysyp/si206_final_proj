@@ -37,9 +37,9 @@ def get_discog_songs():
     return top_25_songs
 
 def setUpDatabase(db_name):
-'''
-Takes the database 'music.db' as a parameter and sets up the database, and returns cur and conn
-'''
+    '''
+    Takes the database 'music.db' as a parameter and sets up the database, and returns cur and conn
+    '''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
     cur = conn.cursor()
