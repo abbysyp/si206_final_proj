@@ -60,11 +60,13 @@ def setUpDatabase(db_name):
     return cur, conn
 
 def set_up_table(ids, cur, conn):
-    '''This function sets up the Spotify table under 'music.db' and takes in all the song features information 
+    '''This function sets up the Spotify info and features table under 'music.db' and takes in all the song features information 
     and stores it in the table 25 songs at a time. This code needs to be run 8 times'''
     
-    cur.execute("CREATE TABLE IF NOT EXISTS Spotify (song_id INTEGER PRIMARY KEY, title TEXT, artist TEXT, tempo INTEGER, danceability INTEGER, speechiness INTEGER, liveness INTEGER, loudness INTEGER)")
-    cur.execute('SELECT song_id FROM Spotify WHERE song_id = (SELECT MAX(song_id) FROM Spotify)')
+    cur.execute("CREATE TABLE IF NOT EXISTS SpotifyINFO (song_id INTEGER PRIMARY KEY, title TEXT, artist TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS SpotifyFEATURES (song_id INTEGER PRIMARY KEY, tempo INTEGER, danceability INTEGER, speechiness INTEGER, liveness INTEGER, loudness INTEGER)")
+    cur.execute('SELECT song_id FROM SpotifyINFO WHERE song_id = (SELECT MAX(song_id) FROM SpotifyINFO)')
+    cur.execute('SELECT song_id FROM SpotifyFEATURES WHERE song_id = (SELECT MAX(song_id) FROM SpotifyFEATURES)')
     start = cur.fetchone()
 
     if (start!= None):
@@ -84,7 +86,8 @@ def set_up_table(ids, cur, conn):
          liveness = features[5]
          loudness = features[6]
 
-         cur.execute("INSERT OR IGNORE INTO Spotify (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness) VALUES (?, ?, ?, ?, ?, ?, ?,?)", (song_id, title, artist, tempo, danceability, speechiness, liveness, loudness))
+         cur.execute("INSERT OR IGNORE INTO SpotifyINFO (song_id, title, artist) VALUES (?, ?, ?)", (song_id, title, artist))
+         cur.execute("INSERT OR IGNORE INTO SpotifyFEATURES (song_id, tempo, danceability, speechiness, liveness, loudness) VALUES (?, ?, ?, ?, ?, ?)", (song_id, tempo, danceability, speechiness, liveness, loudness))
     conn.commit()
 
 def drop_table(name, cur, conn):
@@ -101,7 +104,7 @@ def join_3_databases(info_dict, ranking, cur, conn):
     
     cur.execute("CREATE TABLE IF NOT EXISTS Averages (ranking INTEGER PRIMARY KEY, avg_tempo INTEGER, avg_danceability INTEGER, avg_speechiness INTEGER, avg_liveness INTEGER, avg_loudness INTEGER)")
 
-    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness, Spotify.loudness FROM Discogs JOIN Spotify ON Discogs.song_id == Spotify.song_id WHERE Discogs.ranking == ?", (ranking, ))
+    cur.execute("SELECT SpotifyFEATURES.tempo, SpotifyFEATURES.danceability, SpotifyFEATURES.speechiness, SpotifyFEATURES.liveness, SpotifyFEATURES.loudness FROM Discogs JOIN SpotifyFEATURES ON Discogs.song_id == SpotifyFEATURES.song_id WHERE Discogs.ranking == ?", (ranking, ))
 
     avg_tempo = 0
     avg_danceability = 0
@@ -117,7 +120,7 @@ def join_3_databases(info_dict, ranking, cur, conn):
         avg_loudness += row[4]
 
 
-    cur.execute("SELECT Spotify.tempo, Spotify.danceability, Spotify.speechiness, Spotify.liveness, Spotify.loudness FROM Deezer JOIN Spotify ON Deezer.song_id == Spotify.song_id WHERE Deezer.ranking == ?", (ranking, ))
+    cur.execute("SELECT SpotifyFEATURES.tempo, SpotifyFEATURES.danceability, SpotifyFEATURES.speechiness, SpotifyFEATURES.liveness, SpotifyFEATURES.loudness FROM Deezer JOIN SpotifyFEATURES ON Deezer.song_id == SpotifyFEATURES.song_id WHERE Deezer.ranking == ?", (ranking, ))
 
     for row in cur:
         avg_tempo += row[0]
@@ -161,15 +164,16 @@ def main():
     track_ids = getTrackIDs()
     set_up_table(track_ids, cur,conn)
 
-    #Section 2- Calculate data & write text file
+    # Section 2- Calculate data & write text file
     all_info = {}
     for i in range(1, 26):
         join_3_databases(all_info, i, cur, conn)
     printAverages(all_info, 'results.txt')
 
     #Additional- drop necessary table to restart
-    #drop_table('Spotify', cur,conn)
-    #drop_table('Averages', cur,conn)
+    # drop_table('SpotifyINFO', cur,conn)
+    # drop_table('SpotifyFEATURES', cur,conn)
+    # drop_table('Averages', cur,conn)
 
 if __name__ == '__main__':
     main()
