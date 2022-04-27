@@ -150,7 +150,7 @@ def printAverages(info_dict, file):
             out_file.write('Tempo - ' + str(item[0]) + ', ')
             out_file.write('Danceability - ' + str(item[1]) + ', ')
             out_file.write('Speechiness - ' + str(item[2]) + ', ')
-            out_file.write('Liveness - ' + str(item[3]) + '\n')
+            out_file.write('Liveness - ' + str(item[3]) + ',')
             out_file.write('Loudness - ' + str(item[4]) + '\n')
 
 def main():

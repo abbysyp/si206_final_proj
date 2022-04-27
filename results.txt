@@ -1,51 +1,26 @@
 Average Spotify statistics for the top 25 songs in US, France, Canada, and UK on Deezer and Discogs
-#1: Tempo - 115.03199999999998, Danceability - 0.69975, Speechiness - 0.09902500000000002, Liveness - 0.2033
-Loudness - -7.8675
-#2: Tempo - 122.577, Danceability - 0.6412500000000001, Speechiness - 0.0525375, Liveness - 0.165775
-Loudness - -8.69725
-#3: Tempo - 124.48375, Danceability - 0.683625, Speechiness - 0.0498, Liveness - 0.2566625
-Loudness - -6.15825
-#4: Tempo - 113.03774999999999, Danceability - 0.6925000000000001, Speechiness - 0.11082499999999999, Liveness - 0.2600125
-Loudness - -7.854499999999999
-#5: Tempo - 117.64300000000001, Danceability - 0.753625, Speechiness - 0.1207, Liveness - 0.165475
-Loudness - -7.736875000000001
-#6: Tempo - 122.09025000000001, Danceability - 0.664375, Speechiness - 0.125575, Liveness - 0.21653750000000002
-Loudness - -5.720625
-#7: Tempo - 131.6165, Danceability - 0.653, Speechiness - 0.0849, Liveness - 0.1527125
-Loudness - -7.0265
-#8: Tempo - 114.4915, Danceability - 0.652625, Speechiness - 0.04932500000000001, Liveness - 0.1994
-Loudness - -7.341375000000001
-#9: Tempo - 125.08737500000001, Danceability - 0.661625, Speechiness - 0.154175, Liveness - 0.2727625
-Loudness - -6.241
-#10: Tempo - 137.610125, Danceability - 0.690875, Speechiness - 0.06395, Liveness - 0.12835000000000002
-Loudness - -6.957375
-#11: Tempo - 126.67925000000001, Danceability - 0.7415, Speechiness - 0.12432499999999999, Liveness - 0.1430375
-Loudness - -8.104875
-#12: Tempo - 113.18712500000001, Danceability - 0.7107500000000001, Speechiness - 0.11055, Liveness - 0.1951375
-Loudness - -6.281249999999999
-#13: Tempo - 105.469375, Danceability - 0.6555, Speechiness - 0.10827500000000001, Liveness - 0.1639
-Loudness - -8.697875
-#14: Tempo - 120.90662500000002, Danceability - 0.621, Speechiness - 0.115225, Liveness - 0.2044
-Loudness - -6.400875
-#15: Tempo - 116.701, Danceability - 0.61575, Speechiness - 0.162675, Liveness - 0.21406250000000004
-Loudness - -7.929250000000001
-#16: Tempo - 104.1445, Danceability - 0.657875, Speechiness - 0.106825, Liveness - 0.19774999999999998
-Loudness - -7.1846250000000005
-#17: Tempo - 106.07900000000001, Danceability - 0.688375, Speechiness - 0.115125, Liveness - 0.1179625
-Loudness - -8.5725
-#18: Tempo - 119.8145, Danceability - 0.615375, Speechiness - 0.046575000000000005, Liveness - 0.1797375
-Loudness - -7.149125000000001
-#19: Tempo - 131.15812499999998, Danceability - 0.656, Speechiness - 0.09372499999999999, Liveness - 0.1318875
-Loudness - -9.194500000000001
-#20: Tempo - 135.1025, Danceability - 0.692, Speechiness - 0.10160000000000001, Liveness - 0.16445000000000004
-Loudness - -7.239375
-#21: Tempo - 124.29500000000002, Danceability - 0.714375, Speechiness - 0.0600375, Liveness - 0.1199875
-Loudness - -7.1652499999999995
-#22: Tempo - 135.3315, Danceability - 0.6421250000000001, Speechiness - 0.09150000000000001, Liveness - 0.1744875
-Loudness - -7.595750000000001
-#23: Tempo - 106.80762499999999, Danceability - 0.68025, Speechiness - 0.0848, Liveness - 0.29831250000000004
-Loudness - -6.494750000000001
-#24: Tempo - 114.00862500000001, Danceability - 0.6530000000000001, Speechiness - 0.04595, Liveness - 0.2069125
-Loudness - -7.291125000000001
-#25: Tempo - 125.18737500000002, Danceability - 0.706375, Speechiness - 0.0965875, Liveness - 0.113125
-Loudness - -6.6305
+#1: Tempo - 115.03199999999998, Danceability - 0.69975, Speechiness - 0.09902500000000002, Liveness - 0.2033,Loudness - -7.8675
+#2: Tempo - 122.577, Danceability - 0.6412500000000001, Speechiness - 0.0525375, Liveness - 0.165775,Loudness - -8.69725
+#3: Tempo - 124.48375, Danceability - 0.683625, Speechiness - 0.0498, Liveness - 0.2566625,Loudness - -6.15825
+#4: Tempo - 113.03774999999999, Danceability - 0.6925000000000001, Speechiness - 0.11082499999999999, Liveness - 0.2600125,Loudness - -7.854499999999999
+#5: Tempo - 117.64300000000001, Danceability - 0.753625, Speechiness - 0.1207, Liveness - 0.165475,Loudness - -7.736875000000001
+#6: Tempo - 122.09025000000001, Danceability - 0.664375, Speechiness - 0.125575, Liveness - 0.21653750000000002,Loudness - -5.720625
+#7: Tempo - 131.6165, Danceability - 0.653, Speechiness - 0.0849, Liveness - 0.1527125,Loudness - -7.0265
+#8: Tempo - 114.4915, Danceability - 0.652625, Speechiness - 0.04932500000000001, Liveness - 0.1994,Loudness - -7.341375000000001
+#9: Tempo - 125.08737500000001, Danceability - 0.661625, Speechiness - 0.154175, Liveness - 0.2727625,Loudness - -6.241
+#10: Tempo - 137.610125, Danceability - 0.690875, Speechiness - 0.06395, Liveness - 0.12835000000000002,Loudness - -6.957375
+#11: Tempo - 126.67925000000001, Danceability - 0.7415, Speechiness - 0.12432499999999999, Liveness - 0.1430375,Loudness - -8.104875
+#12: Tempo - 113.18712500000001, Danceability - 0.7107500000000001, Speechiness - 0.11055, Liveness - 0.1951375,Loudness - -6.281249999999999
+#13: Tempo - 105.469375, Danceability - 0.6555, Speechiness - 0.10827500000000001, Liveness - 0.1639,Loudness - -8.697875
+#14: Tempo - 120.90662500000002, Danceability - 0.621, Speechiness - 0.115225, Liveness - 0.2044,Loudness - -6.400875
+#15: Tempo - 116.701, Danceability - 0.61575, Speechiness - 0.162675, Liveness - 0.21406250000000004,Loudness - -7.929250000000001
+#16: Tempo - 104.1445, Danceability - 0.657875, Speechiness - 0.106825, Liveness - 0.19774999999999998,Loudness - -7.1846250000000005
+#17: Tempo - 106.07900000000001, Danceability - 0.688375, Speechiness - 0.115125, Liveness - 0.1179625,Loudness - -8.5725
+#18: Tempo - 119.8145, Danceability - 0.615375, Speechiness - 0.046575000000000005, Liveness - 0.1797375,Loudness - -7.149125000000001
+#19: Tempo - 131.15812499999998, Danceability - 0.656, Speechiness - 0.09372499999999999, Liveness - 0.1318875,Loudness - -9.194500000000001
+#20: Tempo - 135.1025, Danceability - 0.692, Speechiness - 0.10160000000000001, Liveness - 0.16445000000000004,Loudness - -7.239375
+#21: Tempo - 124.29500000000002, Danceability - 0.714375, Speechiness - 0.0600375, Liveness - 0.1199875,Loudness - -7.1652499999999995
+#22: Tempo - 135.3315, Danceability - 0.6421250000000001, Speechiness - 0.09150000000000001, Liveness - 0.1744875,Loudness - -7.595750000000001
+#23: Tempo - 106.80762499999999, Danceability - 0.68025, Speechiness - 0.0848, Liveness - 0.29831250000000004,Loudness - -6.494750000000001
+#24: Tempo - 114.00862500000001, Danceability - 0.6530000000000001, Speechiness - 0.04595, Liveness - 0.2069125,Loudness - -7.291125000000001
+#25: Tempo - 125.18737500000002, Danceability - 0.706375, Speechiness - 0.0965875, Liveness - 0.113125,Loudness - -6.6305
