@@ -5,6 +5,8 @@ import sqlite3
 import unittest
 
 def create_vis(db_filename):
+    '''This function loops through each of the 25 rows in Average and obtain the ranking, avg_tempo, avg_danceability, 
+    avg_speechiness, avg_liveness, avg_loudness and store them in a dictionary. Creates a list of the 25 dictionaries made.'''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_filename)
     cur = conn.cursor()
@@ -43,7 +45,7 @@ def create_tempo_graph(lst):
     plt.scatter(x1, y1, c = "blue")
     plt.xticks(np.arange(0, len(x1) + 1, 1))
     
-
+    plt.title("average tempo for the top 25 songs per country across Discogs and Deezer")
     plt.xlabel("Ranking")
     plt.ylabel("Average Tempo")
 
