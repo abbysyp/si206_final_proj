@@ -33,7 +33,7 @@ def create_vis(db_filename):
     return ranking_avg_features
 
 def create_tempo_graph(lst):
-    '''creating graph 1 using 'music.db' database'''
+    '''creating graph 1 using 'music.db' database that takes the rankings as x-values and the corresponding average tempo as y-values'''
     fig, ax1 = plt.subplots()
     x1 = []
     for rank in lst:
@@ -52,7 +52,7 @@ def create_tempo_graph(lst):
     plt.show()
 
 def create_danceability_graph(lst):
-    '''creating graph 2 using 'music.db' database'''
+    '''creating graph 2 using 'music.db' database that takes the rankings as x-values and the corresponding average danceability as y-values'''
     fig, ax = plt.subplots()
 
     rankings = []
@@ -71,7 +71,7 @@ def create_danceability_graph(lst):
     plt.show()
 
 def create_speechiness_graph(lst):
-    '''creating graph 3 using 'music.db' database'''
+    '''creating graph 3 using 'music.db' database that takes the rankings as x-values and the corresponding average speechiness as y-values'''
     fig = plt.figure()
 
     rankings = []
@@ -92,7 +92,7 @@ def create_speechiness_graph(lst):
     plt.show()
 
 def create_liveness_graph(lst):
-    '''creating graph 4 using 'music.db' database'''
+    '''creating graph 4 using 'music.db' database that takes the rankings as x-values and the corresponding average liveness as y-values'''
     fig = plt.figure()
 
     rankings = []
@@ -113,7 +113,7 @@ def create_liveness_graph(lst):
     plt.show()      
     
 def create_loudness_graph(lst):
-    '''creating graph 5 using 'music.db' database'''
+    '''creating graph 5 using 'music.db' database that takes the rankings as x-values and the corresponding average loudness as y-values'''
     fig = plt.figure()
 
     rankings = []
