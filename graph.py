@@ -89,8 +89,48 @@ def create_speechiness_graph(lst):
 
     plt.show()
 
-       
+def create_liveness_graph(lst):
+    '''creating graph 4'''
+    fig = plt.figure()
+
+    rankings = []
+    liveness_vals = []
+
+    for item in lst:
+        rankings.append(item['ranking'])
+        liveness_vals.append(item['avg_liveness'])
+
+    ax = fig.add_subplot(111)
+
+    ax.bar(rankings, liveness_vals, color='yellow')
+
+    ax.set(xlabel='rankings', ylabel='average liveness rating', title='average liveness for top 25 songs across Discogs and Deezer')
     
+    ax.grid()
+
+    plt.show()      
+    
+def create_loudness_graph(lst):
+    '''creating graph 5'''
+    fig = plt.figure()
+
+    rankings = []
+    loudness_vals = []
+
+    for item in lst:
+        rankings.append(item['ranking'])
+        loudness_vals.append(item['avg_loudness'])
+
+    ax = fig.add_subplot(111)
+
+    ax.bar(rankings, loudness_vals, color='orange')
+
+    ax.set(xlabel='rankings', ylabel='average loudness rating', title='average loudness for top 25 songs across Discogs and Deezer')
+    
+    ax.grid()
+
+    plt.show()    
+
 def main():
     data_lst = create_vis('music.db')
 
@@ -100,6 +140,8 @@ def main():
     
     create_speechiness_graph(data_lst)
 
+    create_liveness_graph(data_lst)
+    create_loudness_graph(data_lst)
 if __name__ == '__main__':
     main()
     unittest.main(verbosity=2)
