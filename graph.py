@@ -31,7 +31,7 @@ def create_vis(db_filename):
     return ranking_avg_features
 
 def create_tempo_graph(lst):
-    '''creating graph 1'''
+    '''creating graph 1 using 'music.db' database'''
     fig, ax1 = plt.subplots()
     x1 = []
     for rank in lst:
@@ -50,7 +50,7 @@ def create_tempo_graph(lst):
     plt.show()
 
 def create_danceability_graph(lst):
-    '''creating graph 2'''
+    '''creating graph 2 using 'music.db' database'''
     fig, ax = plt.subplots()
 
     rankings = []
@@ -69,7 +69,7 @@ def create_danceability_graph(lst):
     plt.show()
 
 def create_speechiness_graph(lst):
-    '''creating graph 3'''
+    '''creating graph 3 using 'music.db' database'''
     fig = plt.figure()
 
     rankings = []
@@ -90,7 +90,7 @@ def create_speechiness_graph(lst):
     plt.show()
 
 def create_liveness_graph(lst):
-    '''creating graph 4'''
+    '''creating graph 4 using 'music.db' database'''
     fig = plt.figure()
 
     rankings = []
@@ -111,7 +111,7 @@ def create_liveness_graph(lst):
     plt.show()      
     
 def create_loudness_graph(lst):
-    '''creating graph 5'''
+    '''creating graph 5 using 'music.db' database'''
     fig = plt.figure()
 
     rankings = []
