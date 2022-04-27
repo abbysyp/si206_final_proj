@@ -62,6 +62,7 @@ def setUpDatabase(db_name):
 def set_up_table(ids, cur, conn):
     '''This function sets up the Spotify table under 'music.db' and takes in all the song features information 
     and stores it in the table 25 songs at a time. This code needs to be run 8 times'''
+    
     cur.execute("CREATE TABLE IF NOT EXISTS Spotify (song_id INTEGER PRIMARY KEY, title TEXT, artist TEXT, tempo INTEGER, danceability INTEGER, speechiness INTEGER, liveness INTEGER, loudness INTEGER)")
     cur.execute('SELECT song_id FROM Spotify WHERE song_id = (SELECT MAX(song_id) FROM Spotify)')
     start = cur.fetchone()
